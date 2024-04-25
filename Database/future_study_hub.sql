@@ -514,6 +514,10 @@ ALTER TABLE `teacher`
 --
 ALTER TABLE `wr_quiz`
   ADD CONSTRAINT `wr_quiz_ibfk_1` FOREIGN KEY (`quiz_id`) REFERENCES `quiz` (`quiz_id`);
+
+ALTER TABLE `video_access`
+  ADD CONSTRAINT `video_access_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`);
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
