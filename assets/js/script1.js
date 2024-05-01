@@ -28,8 +28,8 @@ function validateForm() {
         alert("Contact No must be filled out");
         return false;
     }
-    //   if (gender == "") {
-    //     alert("Name must be filled out");
-    //     return false;
-    //   }
+    if (gender == "") {
+        alert("Gender must be filled out");
+        return false;
+    }
 }

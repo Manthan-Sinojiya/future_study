@@ -120,7 +120,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
                                                                     <td><?php echo htmlentities($result->description); ?></td>
                                                                     <td><?php echo htmlentities($result->sub_id); ?></td>
                                                                     <td>
-                                                                       <a href="manage-material.php?material_id =<?php echo htmlentities($results->id ); ?>" onclick="return confirm('Do you really want to delete the notice?');">
+                                                                       <a href="manage-material.php?material_id=<?php echo htmlentities($result->id); ?>" onclick="return confirm('Do you really want to delete the notice?');">
                                                                             <i class="fa fa-trash fa-3x" title="Delete this Record" style="color:red;"></i> </a>
                                                                     </td>
                                                                 </tr>

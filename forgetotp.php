@@ -4,16 +4,22 @@ session_start();
 include('./assets/include/db.php');
 if (isset($_POST['con'])) {
 
-    $sql = "select * from onetimepassword";
+    $sql = "SELECT otp FROM onetimepassword";
     $result = mysqli_query($conn, $sql);
 
+    $otp = '';
     while ($row = mysqli_fetch_assoc($result)) {
         $otp = $row['otp'];
     }
-    $ot = $_POST['1'] . $_POST['2'] . $_POST['3'] . $_POST['4'] . $_POST['5'] . $_POST['6'];
+
+    $ot = '';
+    for ($i = 1; $i <= 6; $i++) {
+        $ot .= $_POST[$i];
+    }
+
     if ($ot == $otp) {
-        echo "<script>alert('OTP VERIFIRED')</script>";
-        header("location:forgetvr.php");
+        echo "<script>alert('OTP VERIFIED')</script>";
+        header("location: forgetvr.php");
     } else {
         echo "<script>alert('PLEASE ENTER VALID OTP')</script>";
     }
@@ -88,9 +94,9 @@ if (isset($_POST['con'])) {
                         <form id="2faForm" method="post">
                             <div class="row mb-4">
                                 <!-- Use an array for input names to simplify processing -->
-                                <?php for ($i = 0; $i < 6; $i++) { ?>
+                                <?php for ($i = 1; $i <= 6; $i++) { ?>
                                     <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2 pe-0 pe-md-2">
-                                        <input type="text" class="form-control text-lg text-center" required placeholder="_" name="code[]" minlength="1" maxlength="1" aria-label="2fa" oninput="moveToNext(this, event)">
+                                        <input type="text" class="form-control text-lg text-center" required placeholder="_" name="<?php echo $i; ?>" minlength="1" maxlength="1" aria-label="2fa" oninput="moveToNext(this, event)">
                                     </div>
                                 <?php } ?>
                             </div>
@@ -106,7 +112,7 @@ if (isset($_POST['con'])) {
 
     <script>
         function focusFirstInput() {
-            document.querySelector('input[name="code[]"]').focus();
+            document.querySelector('input[name="1"]').focus();
         }
 
         function moveToNext(input, event) {

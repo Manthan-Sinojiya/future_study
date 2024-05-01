@@ -30,7 +30,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {
                             echo "<tr>
                                 <td>" . $row['material_name'] . "</td>
                                 <td>" . $row['description'] . "</td>
-                                <td><a href='../Teacher/" . urlencode($row['pdf_path']) . "'>Download</a></td>
+                                <td><a href='download.php?file=" . urlencode($row['pdf_path']) . "'>Download</a></td>
                             </tr>";
                         }
                     }

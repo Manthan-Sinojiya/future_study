@@ -56,7 +56,6 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
                                             $sql1 = "SELECT student_id from student ";
                                             $query1 = $dbh->prepare($sql1);
                                             $query1->execute();
-                                            $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
                                             $totalstudents = $query1->rowCount();
                                             ?>
                                             <span class="number counter"><?php echo htmlentities($totalstudents); ?></span>
@@ -70,7 +69,6 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
                                             $sql = "SELECT teacher_id from  teacher ";
                                             $query = $dbh->prepare($sql);
                                             $query->execute();
-                                            $results = $query->fetchAll(PDO::FETCH_OBJ);
                                             $totalsubjects = $query->rowCount();
                                             ?>
                                             <span class="number counter"><?php echo htmlentities($totalsubjects); ?></span>
@@ -84,7 +82,6 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
                                             $sql2 = "SELECT material_id from  material ";
                                             $query2 = $dbh->prepare($sql2);
                                             $query2->execute();
-                                            $results2 = $query2->fetchAll(PDO::FETCH_OBJ);
                                             $totalclasses = $query2->rowCount();
                                             ?>
                                             <span class="number counter"><?php echo htmlentities($totalclasses); ?></span>
@@ -98,8 +95,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
                                             $sql3 = "SELECT feedback_id from  feedback ";
                                             $query3 = $dbh->prepare($sql3);
                                             $query3->execute();
-                                            $results3 = $query3->fetchAll(PDO::FETCH_OBJ);
-                                            $totalresults = $query3->rowCount();
+                                            $totalfeedback = $query3->rowCount();
                                             ?>
                                             <span class="number counter"><?php echo htmlentities($totalfeedback); ?></span>
                                             <span class="name">Total Feedback</span>

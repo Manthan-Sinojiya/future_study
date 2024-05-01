@@ -10,7 +10,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
 
     if ($_GET['id']) {
         $id = $_GET['id'];
-        $sql = "delete from notice where id=:id";
+        $sql = "DELETE FROM notice WHERE id=:id";
         $query = $dbh->prepare($sql);
         $query->bindParam(':id', $id, PDO::PARAM_STR);
         $query->execute();
@@ -101,13 +101,13 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
                                                         <tr>
                                                             <th>#</th>
                                                             <th>Notice Title</th>
-                                                            <th>Noticle Details</th>
+                                                            <th>Notice Details</th>
                                                             <th>Creation Date</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <?php $sql = "SELECT * from notice";
+                                                        <?php $sql = "SELECT * FROM notice";
                                                         $query = $dbh->prepare($sql);
                                                         $query->execute();
                                                         $results = $query->fetchAll(PDO::FETCH_OBJ);

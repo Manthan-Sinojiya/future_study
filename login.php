@@ -4,10 +4,10 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-
 $msg = "";
 
 // Start session
+include('./assets/include/db.php');
 session_start();
 
 // Check if form is submitted
@@ -15,12 +15,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get username and password from the form
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
-    function sendMail()
+
+    function sendMail($conn, $email)
     {
-        include('./assets/include/db.php');
-        $mail = $_POST['email'];
         $r = mt_rand(100000, 999999);
-        $sqlotp = "UPDATE onetimepassword SET otp = '$r', mail = '$mail'";
+        $sqlotp = "UPDATE onetimepassword SET otp = '$r', mail = '$email'";
         $resultotp = mysqli_query($conn, $sqlotp);
 
         require './vendor/autoload.php';
@@ -35,8 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->Username   = 'leadergoal12@gmail.com';                     //SMTP username
         $mail->Password   = 'tppz xjsk ixzj sdzp';
         $mail->SetFrom('leadergoal12@gmail.com');
-        $mail->addAddress("{$_POST['email']}");
-        $mail->addReplyTo('leadergoal12@gmail.com');;
+        $mail->addAddress($email);
+        $mail->addReplyTo('leadergoal12@gmail.com');
         $mail->SMTPDebug = false;
         $mail->IsHTML(true);
         $message = "<html><body> Your OTP is:- $r </body></html>";
@@ -50,6 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo 'Message has been sent';
         }
     }
+
     // Query the admin table
     $query = "SELECT * FROM admin WHERE email='$email' AND password='$password'";
     $result = mysqli_query($conn, $query);
@@ -59,9 +59,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // User is an admin
         $_SESSION['role'] = 'admin';
         $_SESSION['email'] = $email;
-        sendMail();
+        sendMail($conn, $email);
         header("location:Admin/otp.php");
-        // header("Location:./Admin/dashboard.php");
         exit;
     }
 
@@ -74,9 +73,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // User is a teacher
         $_SESSION['role'] = 'teacher';
         $_SESSION['email'] = $email;
-        sendMail();
+        sendMail($conn, $email);
         header("location:Teacher/otp.php");
-        // header("Location:./Teacher/change-password.php");
         exit;
     }
 
@@ -89,9 +87,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // User is a student
         $_SESSION['role'] = 'student';
         $_SESSION['email'] = $email;
-        sendMail();
+        sendMail($conn, $email);
         header("location:otp.php");
-        // header("Location:./index.php");
         exit;
     }
 
@@ -123,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 Password:
             </label>
             <input type="password" id="password" name="password" placeholder="Enter your Password" autocomplete="off" required>
-            <a href="./forgetpass.php" style="text-decoration: none; margin-left: 75%;">
+            <a class="forget" href="./forgetpass.php">
                 Forget Password
             </a>
             <div class="wrap">
@@ -133,8 +130,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </form>
     </div>
-    <p>Not registered?
-        <a href="./Registration.php" style="text-decoration: none;">
+    <p class="login">Not registered?
+        <a class="login1" href="./Registration.php">
             Create an account
         </a>
     </p>

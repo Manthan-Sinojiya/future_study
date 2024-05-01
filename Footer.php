@@ -4,8 +4,7 @@
                 <div class="col-md-3">
                     <h2>About Us</h2>
                     <p>
-                        InfinityFree is an independent free hosting initiative, dedicated to providing reliable free
-                        hosting services.
+                        Future Study Hub is a leading educational platform, committed to providing high-quality learning resources.
                     </p>
                 </div>
                 

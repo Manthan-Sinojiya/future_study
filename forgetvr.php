@@ -7,16 +7,18 @@ if (isset($_POST['submit'])) {
     $cpassword = $_POST['cpassword'];
     // $username = $_SESSION['alogin'];
     // Fetch admin details including password from database
-    $sql = "SELECT * FROM student";
+    $sql = "SELECT * FROM student WHERE id = :id"; // Improved query to fetch specific student details
     $query = $dbh->prepare($sql);
+    $query->bindParam(':id', $_SESSION['student_id'], PDO::PARAM_INT); // Binding student ID
     $query->execute();
     $result = $query->fetch(PDO::FETCH_ASSOC);
     // Verify current password
     if ($password === $cpassword) {
         // Update password in database
-        $con = "UPDATE student SET password=:password";
+        $con = "UPDATE student SET password=:password WHERE id = :id"; // Improved query to update password for specific student
         $chngpwd1 = $dbh->prepare($con);
         $chngpwd1->bindParam(':password', $password, PDO::PARAM_STR);
+        $chngpwd1->bindParam(':id', $_SESSION['student_id'], PDO::PARAM_INT); // Binding student ID
         $chngpwd1->execute();
 
         // Update password in session
@@ -47,9 +49,9 @@ if (isset($_POST['submit'])) {
             </label>
             <input type="password" id="password" name="password" placeholder="Enter your New Password" autocomplete="off" required>
             <label for="password">
-                Conform Password:
+                Confirm Password: <!-- Corrected spelling of "Confirm" -->
             </label>
-            <input type="password" id="cpassword" name="cpassword" placeholder="Enter your Conform Password" autocomplete="off" required>
+            <input type="password" id="cpassword" name="cpassword" placeholder="Enter your Confirm Password" autocomplete="off" required>
             <div class="wrap">
                 <button type="submit" name='submit'>
                     Submit

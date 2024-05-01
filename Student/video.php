@@ -41,8 +41,12 @@ function checkVideoAccess($student_id, $video_id) {
 function displayVideo($student_id, $video_id) {
     global $conn; // Ensure $conn is accessible within this function scope
     $progress = checkVideoAccess($student_id, $video_id);
-    $sql = "SELECT file_path FROM videos WHERE id = ?";
+    $sql = "SELECT file_path FROM videos WHERE video_id = ?";
     $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        echo "Error preparing statement: " . $conn->error;
+        return;
+    }
     $stmt->bind_param("i", $video_id);
     $stmt->execute();
     $result = $stmt->get_result();

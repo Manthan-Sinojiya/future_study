@@ -4,21 +4,26 @@ session_start();
 include 'includes/db_connection.php';
 if(isset($_POST['con'])){	
 
-$sql = "select * from onetimepassword";
+$sql = "SELECT otp FROM onetimepassword LIMIT 1";
 $result = mysqli_query($conn, $sql);
 
-while($row = mysqli_fetch_assoc($result)){
+if($row = mysqli_fetch_assoc($result)){
     $otp = $row['otp'];
 	
 }
-$ot = $_POST['1'].$_POST['2'].$_POST['3'].$_POST['4'].$_POST['5'].$_POST['6'];
-if($ot == $otp){
-    echo "<script>alert('OTP VERIFIRED')</script>";
-	header("location:change-password.php");
-    
-}
-else{
-	echo "<script>alert('PLEASE ENTER VALID OTP')</script>";
+
+// Check if all expected POST keys exist to avoid undefined array key warnings
+if(isset($_POST['code']) && count($_POST['code']) == 6) {
+    $ot = implode('', $_POST['code']); // Concatenate all elements of the code array
+    if($ot == $otp){
+        echo "<script>alert('OTP VERIFIED')</script>";
+        header("location:change-password.php");
+    }
+    else{
+        echo "<script>alert('PLEASE ENTER VALID OTP')</script>";
+    }
+} else {
+    echo "<script>alert('Incomplete OTP provided. Please enter all 6 digits.')</script>";
 }
 
 }
@@ -97,7 +102,7 @@ else{
                         <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle avatar-lg img-thumbnail mb-4" alt="profile-image">
                         <h2 class="text-info">2FA Security</h2>
                         <p class="mb-4">Enter 6-digit code from your authenticator app.</p>
-                        <form id="2faForm"  method="post">
+                        <form id="2faForm" method="post">
                             <div class="row mb-4">
                                 <!-- Use an array for input names to simplify processing -->
                                 <?php for ($i = 0; $i < 6; $i++) { ?>

@@ -33,7 +33,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
                     // Execute the SQL query and handle errors
                     if ($conn->query($sql) === TRUE) {
                         $msg = "Material added successfully.";
-                        header("./manage-material.php");
+                        header("location:./manage-material.php");
                     } else {
                         $error = "Error: " . $sql . "<br>" . $conn->error;
                     }

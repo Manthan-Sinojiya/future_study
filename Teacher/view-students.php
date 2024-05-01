@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+error_reporting(E_ALL);
 include('includes/config.php');
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
     header("location:../login.php");
@@ -128,7 +128,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
                                                                     <td><?php echo htmlentities($cnt); ?></td>
                                                                     <td><?php echo htmlentities($result->student_name); ?></td>
                                                                     <td><?php echo htmlentities($result->email); ?></td>
-                                                                    <td><?php echo htmlentities($result->contact_no); ?>
+                                                                    <td><?php echo htmlentities($result->contact_no); ?></td>
                                                                     <td><?php echo htmlentities($result->module_name); ?></td>
                                                                     <td><?php echo htmlentities($result->enrollment_date); ?></td>
                                                                     <!-- <td><?php if ($result->Status == 1) {
@@ -139,7 +139,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
                                                                         ?></td> -->
                                                                     <td>
                                                                         <!-- <a href="edit-student.php?stid=<?php echo htmlentities($result->StudentId); ?>"><i class="fa fa-edit" title="Edit Record"></i> </a> -->
-                                                                        <a href="manage-students.php?del=<?php echo htmlentities($res['student_id']); ?>" onclick="return confirm('Do you really want to delete?');"><img src="./person-x.svg"></a>
+                                                                        <a href="manage-students.php?del=<?php echo htmlentities($result->student_id); ?>" onclick="return confirm('Do you really want to delete?');"><img src="./person-x.svg"></a>
                                                                     </td>
                                                                 </tr>
                                                         <?php $cnt = $cnt + 1;

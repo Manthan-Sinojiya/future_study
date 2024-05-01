@@ -16,7 +16,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
         $query->execute();
         $lastInsertId = $dbh->lastInsertId();
         if ($lastInsertId) {
-            echo '<script>alert("Notice added succesfully")</script>';
+            echo '<script>alert("Notice added successfully")</script>';
             echo "<script>window.location.href ='manage-notices.php'</script>";
         } else {
             echo '<script>alert("Something went wrong. Please try again.")</script>';

@@ -23,11 +23,10 @@ session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get username and password from the form
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
-    // $password = mysqli_real_escape_string($conn, $_POST['password']);
-    function sendMail()
+    $email = $conn->real_escape_string($_POST['email']);
+    // $password = $conn->real_escape_string($_POST['password']);
+    function sendMail($conn)
     {
-        include('./assets/include/db.php');
         $mail = $_POST['email'];
         $r = mt_rand(100000, 999999);
         $sqlotp = "UPDATE onetimepassword SET otp = '$r', mail = '$mail'";
@@ -44,11 +43,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->SMTPAuth = true;
         $mail->Username   = 'leadergoal12@gmail.com';                     //SMTP username
         $mail->Password   = 'tppz xjsk ixzj sdzp';
-        $mail->SetFrom('leadergoal12@gmail.com');
-        $mail->addAddress("{$_POST['email']}");
-        $mail->addReplyTo('leadergoal12@gmail.com');;
+        $mail->setFrom('leadergoal12@gmail.com');
+        $mail->addAddress($_POST['email']);
+        $mail->addReplyTo('leadergoal12@gmail.com');
         $mail->SMTPDebug = false;
-        $mail->IsHTML(true);
+        $mail->isHTML(true);
         $message = "<html><body> Your OTP is:- $r </body></html>";
         $mail->Subject = 'Future Study Hub';
         $mail->Body = $message;
@@ -68,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // User is a student
         $_SESSION['role'] = 'student';
         // $_SESSION['email'] = $email;
-        sendMail();
+        sendMail($conn);
         header("location:forgetotp.php");
         // header("Location:./index.php");
         exit;
@@ -112,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <link rel="stylesheet" href="css/icomoon.css">
 
-    <link rel="stylesheet" href="css/style.css">
+    <!-- <link rel="stylesheet" href="../assets/css/style.css"> -->
 
     <style>
         body {

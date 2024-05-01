@@ -8,20 +8,24 @@ body {
 	min-height: 100vh;
 	flex-direction: column;
 	margin: 0;
-    background-image: url(../img/bg-hero.webp);
+    /* background-image: url(../img/bg-hero.webp); */
+	background: url(../img/hero-background.png)no-repeat fixed 50%;
+	--tw-bg-opacity: 1;
+    background-color: rgb(2 6 23 / var(--tw-bg-opacity));
 }
 
 .main {
 	border-radius: 15px;
-	box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
 	padding: 10px 20px;
 	transition: transform 0.2s;
 	width: 500px;
 	text-align: center;
 }
 
-h1 {
-	color: black;
+h1,
+h3{
+	color: cyan;
 }
 
 label {
@@ -30,7 +34,8 @@ label {
 	margin-top: 10px;
 	margin-bottom: 5px;
 	text-align: left;
-	color: black;
+	/* color: rgb(255, 255, 255); */
+	color:cyan;
 }
 
 
@@ -40,7 +45,7 @@ input {
 	margin-bottom: 15px;
 	padding: 10px;
 	box-sizing: border-box;
-	border: 1px solid #ddd;
+	border: 1px solid #000000;
 	border-radius: 5px;
 }
 
@@ -50,15 +55,15 @@ button {
 	margin-top: 15px;
 	margin-bottom: 15px;
 	border: none;
-	color: white;
+	color:cyan;
 	cursor: pointer;
-	background-color: #7738c3;
+	background-color: #388ec377;
 	width: 100%;
 	font-size: 16px;
 }
 
 button:hover{
-    background-color: black;
+    background-color: rgba(17, 90, 98, 0.66);
     color: white;
 }
 
@@ -66,4 +71,22 @@ button:hover{
 	display: flex;
 	justify-content: center;
 	align-items: center;
+    margin-top: 20px; /* Added margin-top for spacing */
+}
+.login1,
+.login{
+    align-items: center;
+	color:white;
+	text-decoration: none;
+}
+.login1:hover{
+	color:cyan;
+}
+.forget{
+	margin-left: 75%;
+	text-decoration: none;
+	color: white;
+}
+.forget:hover{
+	color:cyan;
 }

@@ -24,15 +24,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contact_no = clean_input($_POST["contact_no"]);
     $gender = clean_input($_POST["gender"]);
     
+    // Validate inputs
+    if (empty($student_name)) {
+        $student_nameErr = "Student name is required.";
+    }
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $emailErr = "Invalid email format";
+    }
+    if (empty($dob)) {
+        $dobErr = "Date of birth is required.";
+    }
+    if (empty($password)) {
+        $passwordErr = "Password is required.";
+    }
+    if (!preg_match("/^[0-9]{10}$/", $contact_no)) {
+        $contact_noErr = "Invalid contact number";
+    }
+    if (empty($gender)) {
+        $genderErr = "Gender is required.";
+    }
    
     // If there are no validation errors, insert data into the database
     if (empty($student_nameErr) && empty($emailErr) && empty($dobErr) && empty($passwordErr) && empty($contact_noErr) && empty($genderErr)) {
-        $sql = "INSERT INTO student (student_name, email, dob, password, contact_no, gender) VALUES ('$student_name', '$email', '$dob', '$password', '$contact_no', '$gender')";
-        if ($conn->query($sql) === TRUE) {
+        $sql = "INSERT INTO student (student_name, email, dob, password, contact_no, gender) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssssss", $student_name, $email, $dob, $password, $contact_no, $gender);
+        if ($stmt->execute()) {
             echo '<script>alert("Registration successful!");</script>';
             echo '<script>window.location.href="login.php";</script>';
         } else {
-            echo '<script>alert("Error: ' . $sql . '\n' . $conn->error . '");</script>';
+            echo '<script>alert("Error: ' . $stmt->error . '");</script>';
         }
     }
 }
@@ -71,18 +92,23 @@ $conn->close();
             <h3>Registration Form</h3>
             <label for="student_name">Student Name :</label>
             <input type="text" id="student_name" name="student_name" placeholder="Enter your full name" autocomplete="off" required oninput="validateStudentName(this)" pattern="^[A-Za-z\s]+$">
+            <span class="error"><?php echo $student_nameErr;?></span>
 
             <label for="email">Email :</label>
             <input type="email" name="email" class="form-control" placeholder="Enter your Email" id="email" required="required" autocomplete="off">
+            <span class="error"><?php echo $emailErr;?></span>
 
             <label for="dob">Date of Birth :</label>
             <input type="date" id="dob" name="dob" placeholder="Enter your DOB" autocomplete="off" max="<?php echo date('Y-m-d', strtotime('-14 years')); ?>" required>
+            <span class="error"><?php echo $dobErr;?></span>
 
             <label for="password">Password :</label>
             <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="off" pattern="^(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,}$" title="Password must contain at least one number, one alphabet, one symbol, and be at least 8 characters long" required>
+            <span class="error"><?php echo $passwordErr;?></span>
 
             <label for="contact_no">Contact :</label>
             <input type="tel" name="contact_no" class="form-control" id="contact_no" placeholder="Enter your contact no" pattern="\d{10}" title="Please enter a 10-digit phone number" required autocomplete="off" onkeypress="validateContactNumber(event)">
+            <span class="error"><?php echo $contact_noErr;?></span>
 
             <label for="gender">Gender :</label>
             <select id="gender" name="gender" required>
@@ -91,8 +117,7 @@ $conn->close();
                 <option value="female">Female</option>
                 <option value="other">Other</option>
             </select>
-            <!-- <label for="file">File Upload</label>
-            <input type="file" name="fileToUpload" id="fileToUpload"> -->
+            <span class="error"><?php echo $genderErr;?></span>
             <div class="wrap">
                 <button type="submit">Submit</button>
             </div>
@@ -101,7 +126,7 @@ $conn->close();
         <div id="custom-validation-message" class="custom-validation-message"></div>
     </div>
     <div class="login">
-        <p>Already have an account? <a href="./login.php">Log in</a>.</p>
+        <p>Already have an account? <a class="login1" href="./login.php">Log in</a></p>
     </div>
 
     <script>
@@ -176,3 +201,4 @@ $conn->close();
 </body>
 
 </html>
+

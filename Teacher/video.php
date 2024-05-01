@@ -1,176 +1,85 @@
 <?php
-// Improved code for video.php in the Teacher section
 session_start();
+include("./includes/db_connection.php");
+// Uncomment the following lines to enforce that only teachers can upload videos
+// if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
+//     header("location:../login.php");
+//     exit;
+// }
+    
+// HTML form for uploading video
+echo '<div class="container mt-5">';
+echo '<h2>Upload Video Lecture</h2>';
+echo '<form action="" method="post" enctype="multipart/form-data">';
+echo '<div class="form-group">';
+echo '<label for="video_title">Video Title:</label>';
+echo '<input type="text" class="form-control" id="video_title" name="video_title" required>';
+echo '</div>';
+echo '<div class="form-group">';
+echo '<label for="video_file">Select Video:</label>';
+echo '<input type="file" class="form-control-file" id="video_file" name="video_file" required>';
+echo '</div>';
+echo '<button type="submit" class="btn btn-primary" name="upload">Upload Video</button>';
+echo '</form>';
+echo '</div>';
 
-// Redirect to login if not logged in as a teacher
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'teacher') {
-    header('Location: ../login.php');
-    exit();
-}
 
-// Include database connection
-include('../assets/include/db.php');
+// if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
+//     header("location:../login.php");
+//     exit;
+// }
 
-// Function to get video details from the database
-function getVideoDetails($video_id) {
-    global $conn;
-    $sql = "SELECT title, description, file_path FROM videos WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $video_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    return $result->num_rows > 0 ? $result->fetch_assoc() : false;
-}
+// Handle video upload
+if (isset($_POST['upload'])) {
+    $video_title = $_POST['video_title'];
+    $video_file = $_FILES['video_file']['name'];
+    $target_dir = "uploads/";
+    $target_file = $target_dir . basename($video_file);
 
-// Function to update video details in the database
-function updateVideoDetails($video_id, $title, $description) {
-    global $conn;
-    $sql = "UPDATE videos SET title = ?, description = ? WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssi", $title, $description, $video_id);
-    if ($stmt->execute()) {
-        echo "Video details updated successfully.";
-    } else {
-        echo "Error updating video details: " . $conn->error;
-    }
-}
-
-// Function to upload a video
-function uploadVideo($file, $description) {
-    $target_dir = "../uploads/videos/";
-    $target_file = $target_dir . basename($file["name"]);
+    // Check if file is a video
     $videoFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-    $uploadOk = 1;
+    $extensions_arr = array("mp4","avi","3gp","mov","mpeg");
 
-    // Validate video file
-    if (isset($_POST["submit"])) {
-        $check = getimagesize($file["tmp_name"]);
-        $uploadOk = $check !== false ? 1 : 0;
-        echo $uploadOk ? "File is a video - " . $check["mime"] . "." : "File is not a video.";
-    }
-
-    // Check if file already exists
-    if (file_exists($target_file)) {
-        echo "Sorry, file already exists.";
-        $uploadOk = 0;
-    }
-
-    // Check file size
-    if ($file["size"] > 5000000) {
-        echo "Sorry, your file is too large.";
-        $uploadOk = 0;
-    }
-
-    // Allow certain file formats
-    $allowedTypes = ['mp4', 'avi', 'mov', '3gp', 'mpeg'];
-    if (!in_array($videoFileType, $allowedTypes)) {
-        echo "Sorry, only MP4, AVI, MOV, 3GP & MPEG files are allowed.";
-        $uploadOk = 0;
-    }
-
-    // Attempt to upload file if validation passed
-    if ($uploadOk) {
-        if (move_uploaded_file($file["tmp_name"], $target_file)) {
-            echo "The file " . htmlspecialchars(basename($file["name"])) . " has been uploaded.";
-            $sql = "INSERT INTO videos (filename, description) VALUES (?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ss", htmlspecialchars(basename($file["name"])), $description);
-            if ($stmt->execute()) {
-                echo "Video description saved successfully.";
-            } else {
-                echo "Error saving video description: " . $conn->error;
-            }
-        } else {
-            echo "Sorry, there was an error uploading your file.";
+    if (in_array($videoFileType, $extensions_arr)) {
+        // Upload file
+        if (move_uploaded_file($_FILES['video_file']['tmp_name'], $target_file)) {
+            $query = "INSERT INTO videos (title, file_path) VALUES (?, ?)";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("ss", $video_title, $target_file);
+            $stmt->execute();
+            echo "Upload successfully.";
         }
     } else {
-        echo "Sorry, your file was not uploaded.";
+        echo "Invalid file extension.";
     }
 }
 
-// Function to add a video lecture
-function addVideoLecture($video_url, $video_name, $video_description) {
-    global $conn;
-    $sql = "INSERT INTO video_lectures (url, name, description) VALUES (?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    if ($stmt) {
-        $stmt->bind_param("sss", $video_url, $video_name, $video_description);
-        $stmt->execute();
-        echo $stmt->affected_rows > 0 ? '<script>alert("Video lecture added successfully!");</script>' : '<script>alert("Error adding video lecture.");</script>';
-        $stmt->close();
-    } else {
-        echo '<script>alert("Database error: could not prepare statement.");</script>';
+// Fetch all videos
+$query = "SELECT * FROM videos";
+$result = $conn->query($query);
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        echo "Video ID: " . $row["id"] . " - Title: " . $row["title"] . "<br>";
     }
+} else {
+    echo "No videos found.";
 }
 
-// Function to update a video lecture
-function updateVideoLecture($video_id, $video_url, $video_name, $video_description) {
-    global $conn;
-    $sql = "UPDATE video_lectures SET url = ?, name = ?, description = ? WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    if ($stmt) {
-        $stmt->bind_param("sssi", $video_url, $video_name, $video_description, $video_id);
-        $stmt->execute();
-        echo $stmt->affected_rows > 0 ? '<script>alert("Video lecture updated successfully!");</script>' : '<script>alert("Error updating video lecture.");</script>';
-        $stmt->close();
-    } else {
-        echo '<script>alert("Database error: could not prepare statement.");</script>';
-    }
-}
-
-// Function to delete a video lecture
-function deleteVideoLecture($video_id) {
-    global $conn;
-    $sql = "DELETE FROM video_lectures WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    if ($stmt) {
-        $stmt->bind_param("i", $video_id);
-        $stmt->execute();
-        echo $stmt->affected_rows > 0 ? '<script>alert("Video lecture deleted successfully!");</script>' : '<script>alert("Error deleting video lecture.");</script>';
-        $stmt->close();
-    } else {
-        echo '<script>alert("Database error: could not prepare statement.");</script>';
-    }
-}
-
-// Handle form submissions
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['file'])) {
-        uploadVideo($_FILES["videoFile"], $_POST["description"]);
-    } elseif (isset($_POST['add'])) {
-        addVideoLecture($_POST['video_url'] ?? '', $_POST['video_name'] ?? '', $_POST['video_description'] ?? '');
-    } elseif (isset($_POST['update'])) {
-        updateVideoLecture($_POST['video_id'] ?? 0, $_POST['video_url'] ?? '', $_POST['video_name'] ?? '', $_POST['video_description'] ?? '');
-    } elseif (isset($_POST['delete'])) {
-        deleteVideoLecture($_POST['video_id'] ?? 0);
-    }
-}
-
+$conn->close();
 ?>
 
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Manage Video Lectures</title>
-</head>
-
-<body>
-    <h1>Manage Video Lectures</h1>
-    <form method="post" enctype="multipart/form-data">
-        <label for="videoFile">Select video to upload:</label>
-        <input type="file" name="videoFile" id="videoFile" required>
-        <input type="hidden" id="video_id" name="video_id">
-        <label for="video_url">Video URL:</label>
-        <input type="text" id="video_url" name="video_url" required><br>
-        <label for="video_name">Video Name:</label>
-        <input type="text" id="video_name" name="video_name" required><br>
-        <label for="video_description">Video Description:</label>
-        <textarea id="video_description" name="video_description" required></textarea><br>
-        <button type="submit" name="add">Add Video</button>
-        <button type="submit" name="update">Update Video</button>
-        <button type="submit" name="delete">Delete Video</button>
-    </form>
-</body>
-
-</html>
+<script>
+// AJAX for tracking video progress
+function updateProgress(videoId, userId, currentTime) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log('Progress updated');
+        }
+    };
+    xhttp.open("POST", "update_video_progress.php", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("video_id=" + videoId + "&user_id=" + userId + "&current_time=" + currentTime);
+}
+</script>

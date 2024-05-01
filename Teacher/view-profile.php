@@ -1,12 +1,13 @@
 <?php
 session_start();
-error_reporting(0);
+error_reporting(E_ALL);
 include('includes/config.php');
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
     header("location:../login.php");
     exit;
 } else {
-
+$msg = '';
+$error = '';
 ?>
     <!DOCTYPE html>
     <html lang="en">

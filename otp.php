@@ -6,25 +6,23 @@ session_start();
 include('./assets/include/db.php');
 if(isset($_POST['con'])){	
 
-$sql = "select * from onetimepassword";
+$sql = "SELECT otp FROM onetimepassword LIMIT 1";
 $result = mysqli_query($conn, $sql);
+$otp = mysqli_fetch_assoc($result)['otp'];
 
-while($row = mysqli_fetch_assoc($result)){
-    $otp = $row['otp'];
-	
-}
-$ot = $_POST['1'].$_POST['2'].$_POST['3'].$_POST['4'].$_POST['5'].$_POST['6'];
+$ot = implode('', $_POST['code']); // Using the array of inputs directly
 if($ot == $otp){
-    echo "<script>alert('OTP VERIFIRED')</script>";
-	header("location:./index.php");
-    
+    echo "<script>alert('OTP VERIFIED');</script>";
+    header("location:./index.php");
 }
 else{
-	echo "<script>alert('PLEASE ENTER VALID OTP')</script>";
+    echo "<script>alert('PLEASE ENTER VALID OTP');</script>";
 }
 
 }
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
