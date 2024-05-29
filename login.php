@@ -59,7 +59,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // User is an admin
         $_SESSION['role'] = 'admin';
         $_SESSION['email'] = $email;
-        sendMail($conn, $email);
         header("location:Admin/otp.php");
         exit;
     }
@@ -71,8 +70,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if user is a teacher
     if (mysqli_num_rows($result) == 1) {
         // User is a teacher
+        $teacher_row = mysqli_fetch_assoc($result); // Fetch the teacher row
         $_SESSION['role'] = 'teacher';
         $_SESSION['email'] = $email;
+        $_SESSION['teacher_email'] = $email; // Set teacher email session variable
+        $_SESSION['teacher_id'] = $teacher_row['teacher_id']; // Set teacher ID session variable
         sendMail($conn, $email);
         header("location:Teacher/otp.php");
         exit;
@@ -92,6 +94,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
+    // Optional: Display MySQL errors
+    if (mysqli_error($conn)) {
+        echo "MySQL Error: " . mysqli_error($conn);
+    }
     // Invalid username or password
     $msg = "<div class='alert alert-danger'>Email or password do not match.</div>";
 }

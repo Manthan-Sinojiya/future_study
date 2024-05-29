@@ -4499,7 +4499,7 @@ fieldset:disabled .btn {
     --bs-navbar-brand-padding-y: 0.3125rem;
     --bs-navbar-brand-margin-end: 1rem;
     --bs-navbar-brand-font-size: 1.25rem;
-    --bs-navbar-brand-color:rgba(203, 213, 225, .9);
+    --bs-navbar-brand-color: rgba(var(--bs-emphasis-color-rgb), 1);
     --bs-navbar-brand-hover-color: rgba(var(--bs-emphasis-color-rgb), 1);
     --bs-navbar-nav-link-padding-x: 0.5rem;
     --bs-navbar-toggler-padding-y: 0.25rem;
@@ -4562,10 +4562,8 @@ fieldset:disabled .btn {
     transition: all .145s ease-out;
 }
 .navbar-nav :hover {
-    /* box-shadow: 4px 4px 0 #00fff2a8; */
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+    box-shadow: 4px 4px 0 #dfdede;
     transform: translate(-4px,-4px);
-    border-radius: 10px;
 }
 .navbar-nav log{
         --bs-nav-link-padding-x: 0;
@@ -4855,7 +4853,7 @@ fieldset:disabled .btn {
     .navbar-expand-xl .navbar-collapse {
         display: flex !important;
         flex-basis: auto;
-        /* padding-left: 25%; */
+        padding-left: 25%;
     }
 
     .navbar-expand-xl .navbar-toggler {
@@ -13926,10 +13924,7 @@ h3,
 h4,
 h5,
 h6 {
-    /* color: var(--black); */
-    color: transparent;
-    color: rgba(203, 213, 225, .9);
-    --tw-gradient-to: #fde047 var(--tw-gradient-to-position);
+    color: var(--black);
     font-family: var(--font-heading)
 }
 
@@ -14032,10 +14027,8 @@ body {
     margin: 0;
     padding: 0;
     height: 100%;
-    background: url(../img/hero-background.png)no-repeat fixed 50%;
-    --tw-bg-opacity: 1;
-    background-color: rgb(2 6 23 / var(--tw-bg-opacity));
-    font-family: var(--font-paragraph);
+    background-color: var(--white);
+    font-family: var(--font-paragraph)
 }
 
 body {
@@ -14059,13 +14052,11 @@ header {
 }
 
 .navbar {
-    /* background: #fff !important; */
-    --tw-bg-opacity: 1;
-    background-color: rgb(2 6 23 / var(--tw-bg-opacity))!important ;
+    background: #fff !important;
     position: relative;
     z-index: 9999;
     padding-top: 0 !important;
-    padding-bottom: 5px !important;
+    padding-bottom: 5px !important
 }
 
 ul.navbar-nav {
@@ -14077,12 +14068,7 @@ a.navbar-brand {
     font-size: 16px;
     font-family: var(--font-heading);
     padding: 12px 20px;
-    color: var(--black);
-    color: rgba(203, 213, 225, .9);
-
-}
-a.navbar-brand:hover{
-    color:#25cff2;
+    color: var(--black)
 }
 
 ul.navbar-nav a:hover,
@@ -14151,10 +14137,10 @@ ul.navbar-nav a.active {
 
 .usp .wrapper {
     border-radius: 10px;
-    /* background: #fff; */
+    background: #fff;
     -webkit-box-shadow: 0 0 25px 0 rgba(0, 0, 0, .3);
     -moz-box-shadow: 0 0 25px 0 rgba(0, 0, 0, .3);
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 25px rgba(0, 0, 0, .3);
     padding: 60px;
     text-align: center;
     margin-bottom: 45px
@@ -14226,8 +14212,7 @@ ul.navbar-nav a.active {
 }
 
 .cta .form_wrapper {
-    /* background: var(--purple); */
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+    background: var(--purple);
     border-radius: 12px;
     padding: 60px;
     text-align: left
@@ -14336,10 +14321,10 @@ ul.navbar-nav a.active {
 
 footer {
     padding: var(--base-padding);
-    /* background: #fff */
+    background: #fff;
     -webkit-box-shadow: 0 0 25px 0 rgba(0, 0, 0, .3);
     -moz-box-shadow: 0 0 25px 0 rgba(0, 0, 0, .3);
-    box-shadow: 0 0 25px rgba(0, 255, 229, 0.3)
+    box-shadow: 0 0 25px rgba(0, 0, 0, .3)
 }
 
 footer ul {
@@ -14517,11 +14502,8 @@ footer img {
 .hero,
 .cta,
 .soft {
-    background: url(../img/hero-background.png)no-repeat fixed 50%;
-    --tw-bg-opacity: 1;
-    background-color: rgb(2 6 23 / var(--tw-bg-opacity));
+    background: url(../img/bg-hero.webp)no-repeat fixed 50%;
 }
-
 
 .usp .wrapper {
     padding: 60px 30px

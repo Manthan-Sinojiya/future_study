@@ -107,7 +107,9 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <?php $sql = "SELECT * from material";
+                                                        <?php $sql = "SELECT m.material_id,m.material_name,m.description,s.sub_name 
+                                                        from material m
+                                                        join subject s ON m.sub_id = s.sub_id";
                                                         $query = $dbh->prepare($sql);
                                                         $query->execute();
                                                         $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -118,7 +120,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
                                                                     <td><?php echo htmlentities($cnt); ?></td>
                                                                     <td><?php echo htmlentities($result->material_name); ?></td>
                                                                     <td><?php echo htmlentities($result->description); ?></td>
-                                                                    <td><?php echo htmlentities($result->sub_id); ?></td>
+                                                                    <td><?php echo htmlentities($result->sub_name); ?></td>
                                                                     <td>
                                                                        <a href="manage-material.php?material_id=<?php echo htmlentities($result->id); ?>" onclick="return confirm('Do you really want to delete the notice?');">
                                                                             <i class="fa fa-trash fa-3x" title="Delete this Record" style="color:red;"></i> </a>

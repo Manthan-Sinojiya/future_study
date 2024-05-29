@@ -232,7 +232,7 @@ if (isset($_POST['submit'])) {
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-sm-offset-2 col-sm-10">
-                                                    <button type="submit" name="submit" class="btn btn-primary">Add</button>
+                                                <button type="submit" name="submit" class="btn btn-success btn-labeled">Add<span class="btn-label btn-label-right"><i class="fa fa-check"></i></span></button>
                                                 </div>
                                             </div>
                                         </form>

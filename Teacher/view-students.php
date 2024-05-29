@@ -6,6 +6,8 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
     header("location:../login.php");
     exit;
 } else {
+    $msg = '';
+    $error = '';
 
 ?>
     <!DOCTYPE html>
@@ -117,7 +119,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <?php $sql = "SELECT s.student_id, s.student_name, s.email, s.contact_no, s.enrollment_date, m.module_name from student AS s INNER JOIN module AS m ON s.module_id = m.module_id;";
+                                                        <?php $sql = "SELECT s.student_id, s.student_name, s.email, s.contact_no, m.module_name, s.enrollment_date from student AS s INNER JOIN module AS m ON s.module_id = m.module_id;";
                                                         $query = $dbh->prepare($sql);
                                                         $query->execute();
                                                         $results = $query->fetchAll(PDO::FETCH_OBJ);

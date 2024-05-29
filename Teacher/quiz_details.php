@@ -3,10 +3,10 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 session_start();
 include './includes/config.php';
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
-    header("location:../login.php");
-    exit;
-}
+// if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
+//     header("location:../login.php");
+//     exit;
+// }
 $msg = ""; // Initialize message variable
 
 if (isset($_POST['submit'])) {
@@ -30,16 +30,16 @@ if (isset($_POST['submit'])) {
         $quiz_id = $dbh->lastInsertId();
         switch ($subject_id) {
             case 1:
-                header("Location:/exam/add_li_exam.php?subject_id=" . $subject_id . "&quiz_id=" . $quiz_id .  "&total=" . $total);
+                header("Location:./exam/add_li_exam.php?subject_id=" . $subject_id . "&quiz_id=" . $quiz_id .  "&total=" . $total);
                 break;
             case 2:
                 header("Location:./exam/add_wr_exam.php?subject_id=" . $subject_id . "&quiz_id=" . $quiz_id .  "&total=" . $total);
                 break;
             case 3:
-                header("Location: Exam/add_re_exam.php?subject_id=" . $subject_id . "&quiz_id=" . $quiz_id .  "&total=" . $total);
+                header("Location:./exam/add_re_exam.php?subject_id=" . $subject_id . "&quiz_id=" . $quiz_id .  "&total=" . $total);
                 break;
             case 4:
-                header("Location: Exam/add_sp_exam.php?subject_id=" . $subject_id . "&quiz_id=" . $quiz_id .  "&total=" . $total);
+                header("Location:./exam/add_sp_exam.php?subject_id=" . $subject_id . "&quiz_id=" . $quiz_id .  "&total=" . $total);
                 break;
             default:
                 $msg = "Error adding quiz details. Please try again.";
