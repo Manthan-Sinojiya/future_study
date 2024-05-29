@@ -47,7 +47,7 @@
                             <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Avatar"
                                 class="img-fluid my-3" style="width: 50px; margin-left:47%;" />
                             </div>
-                            <span style="color :cyan; margin-left:25%;">Welcome, <?php echo $row['student_name']; ?></span>
+                            <span style="color:black; margin-left:25%;">Welcome, <?php echo $row['student_name']; ?></span>
                         </div>
                         <a href="./logout.php" class="btn btn white">Logout</a>
                 <?php
