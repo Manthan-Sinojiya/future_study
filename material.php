@@ -14,7 +14,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Material</title>
-    <link rel="stylesheet" href="path_to_css_file.css"> <!-- Link to CSS for styling if needed -->
+    <link rel="stylesheet" href="./assets/css/style.css"> <!-- Link to CSS for styling if needed -->
 </head>
 <body>
     <div class="panel-body p-20">

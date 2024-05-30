@@ -1,5 +1,5 @@
 <?php
-include("db_connect.php");
+include("./includes/db.php");
 
 // Add exam
 $name = $_POST['name'] ?? '';
