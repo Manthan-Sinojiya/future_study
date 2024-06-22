@@ -59,6 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // User is an admin
         $_SESSION['role'] = 'admin';
         $_SESSION['email'] = $email;
+        sendMail($conn,$email);
         header("location:Admin/otp.php");
         exit;
     }

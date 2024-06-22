@@ -1,34 +1,31 @@
 <?php
 session_start();
-
-include 'includes/db.php';
+include('./includes/db.php');
 if(isset($_POST['con'])){	
 
-$sql = "select * from onetimepassword";
+$sql = "SELECT otp FROM onetimepassword LIMIT 1";
 $result = mysqli_query($conn, $sql);
+$otp = mysqli_fetch_assoc($result)['otp'];
 
-while($row = mysqli_fetch_assoc($result)){
-    $otp = $row['otp'];
-	
-}
-$ot = $_POST['1'].$_POST['2'].$_POST['3'].$_POST['4'].$_POST['5'].$_POST['6'];
+$ot = implode('', $_POST['code']); // Using the array of inputs directly
 if($ot == $otp){
-    echo "<script>alert('OTP VERIFIRED')</script>";
-	header("location:dashboard.php");
-    
+    echo "<script>alert('OTP VERIFIED');</script>";
+    header("location:dashboard.php");
 }
 else{
-	echo "<script>alert('PLEASE ENTER VALID OTP')</script>";
+    echo "<script>alert('PLEASE ENTER VALID OTP');</script>";
 }
 
 }
 ?>
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <link rel="icon" href="../Admin Dashboard/fj.png" type="image/gif" sizes="16x16">
+    <!-- <link rel="icon" href="../Admin Dashboard/fj.png" type="image/gif" sizes="16x16"> -->
     <title>Future Study Hub</title>
 
     <meta charset="utf-8">
@@ -78,15 +75,6 @@ else{
     </style>
 
 </head>
-
-<!DOCTYPE html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2FA Security</title>
-</head>
 <body onload="focusFirstInput()">
     <div class="container">
         <br>
@@ -97,7 +85,7 @@ else{
                         <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle avatar-lg img-thumbnail mb-4" alt="profile-image">
                         <h2 class="text-info">2FA Security</h2>
                         <p class="mb-4">Enter 6-digit code from your authenticator app.</p>
-                        <form id="2faForm" action="./dashboard.php"  method="post">
+                        <form id="2faForm"  method="post">
                             <div class="row mb-4">
                                 <!-- Use an array for input names to simplify processing -->
                                 <?php for ($i = 0; $i < 6; $i++) { ?>
